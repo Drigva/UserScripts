@@ -5,7 +5,7 @@
 // @description  TickTick profiles, page-to-task manager and bookmarklet generator
 // @author       Drigva
 // @match        *://*/*
-// @icon         https://img.icons8.com/color/600/tick-tick.png
+// @icon         https://raw.githubusercontent.com/Drigva/UserScripts/refs/heads/main/TickTick/favicon.svg
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
 // @grant        GM_getValue
