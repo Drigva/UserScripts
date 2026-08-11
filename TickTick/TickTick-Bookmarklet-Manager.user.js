@@ -18,7 +18,8 @@
 // @license      MIT
 //
 // @homepageURL  https://github.com/Drigva/UserScripts/TickTick
-// @downloadURL  https://github.com/Drigva/UserScripts/raw/refs/heads/main/TickTick/TickTick-Bookmarklet-Manager.user.js
+// @downloadURL  https://raw.githubusercontent.com/Drigva/UserScripts/main/TickTick/TickTick-Bookmarklet-Manager.user.js
+// @updateURL    https://raw.githubusercontent.com/Drigva/UserScripts/main/TickTick/TickTick-Bookmarklet-Manager.user.js
 // ==/UserScript==
 
 'use strict';
