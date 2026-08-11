@@ -1,0 +1,7 @@
+1. Implement full OAuth2.
+2. Improve timeZone handling.
+3. Add a button to refresh project cache.
+4. Allow multiple tags with autocomplete.
+5. Allow tasks without a date, today, tomorrow, next week.
+6. Allow visual priority selection.
+7. Display API errors in a more user-friendly way.
