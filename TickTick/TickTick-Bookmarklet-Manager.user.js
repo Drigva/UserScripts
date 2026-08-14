@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TickTick Bookmarklet Manager
 // @namespace    https://example.local/
-// @version      1.1.1
+// @version      1.1.2
 // @description  TickTick profiles, page-to-task manager and bookmarklet generator
 // @author       Drigva
 // @match        *://*/*
@@ -70,6 +70,29 @@ function escapeHtml(value) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
+}
+
+function gmRequest(options) {
+    return new Promise((resolve, reject) => {
+        GM_xmlhttpRequest({
+            method: options.method || 'GET',
+            url: options.url,
+            headers: options.headers || {},
+            data: options.data,
+
+            onload(response) {
+                resolve(response);
+            },
+
+            onerror(error) {
+                reject(error);
+            },
+
+            ontimeout() {
+                reject(new Error('Request timeout.'));
+            }
+        });
+    });
 }
 
 /* ============================================================
@@ -458,19 +481,21 @@ function getLocalFallback() {
 }
 
 async function getDefuddleContent(url) {
-    const response = await fetch('https://defuddle.md/' + url);
+    const response = await gmRequest({
+        url: 'https://defuddle.md/' + url
+    });
 
-    if (!response.ok) {
+    if (response.status < 200 || response.status >= 300) {
         throw new Error('Defuddle returned HTTP ' + response.status);
     }
 
-    const content = await response.text();
+    const text = response.responseText;
 
-    if (!content.trim()) {
+    if (!text.trim()) {
         throw new Error('Defuddle returned empty content.');
     }
 
-    return content;
+    return text;
 }
 
 /* ============================================================
@@ -526,8 +551,9 @@ async function fetchProjects(token) {
         throw new Error('Access Token not provided.');
     }
 
-    const response = await fetch('https://api.ticktick.com/open/v1/project', {
+    const response = await gmRequest({
         method: 'GET',
+        url: 'https://api.ticktick.com/open/v1/project',
         headers: {
             'Authorization': 'Bearer ' + token,
             'Accept': 'application/json'
@@ -544,11 +570,11 @@ async function fetchProjects(token) {
         );
     }
 
-    if (!response.ok) {
+    if (response.status < 200 || response.status >= 300) {
         throw new Error('TickTick returned HTTP ' + response.status + '.');
     }
 
-    const data = await response.json();
+    const data = JSON.parse(response.responseText);
 
     if (!Array.isArray(data)) {
         throw new Error('Invalid response from the TickTick API.');
@@ -1254,17 +1280,18 @@ async function executeProfile(profile) {
 
         updateTooltip(tooltip, 'Adding task…', 'loading');
 
-        const response = await fetch('https://api.ticktick.com/open/v1/task', {
+        const response = await gmRequest({
             method: 'POST',
+            url: 'https://api.ticktick.com/open/v1/task',
             headers: {
                 'Authorization': 'Bearer ' + profile.accessToken,
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify(task)
+            data: JSON.stringify(task)
         });
 
-        const responseText = await response.text();
+        const responseText = response.responseText;
         let data = null;
 
         try {
@@ -1273,7 +1300,7 @@ async function executeProfile(profile) {
             data = null;
         }
 
-        if (!response.ok) {
+        if (response.status < 200 || response.status >= 300) {
             const apiMessage = data && (data.errorMessage || data.message || data.error);
             throw new Error(apiMessage || ('TickTick returned HTTP ' + response.status + (responseText ? ' · ' + responseText.substring(0, 300) : '')));
         }
