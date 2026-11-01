@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Redirecionador Reddit para Redveal
 // @namespace    local
-// @version      1.3
+// @version      1.3.1
 // @description  Abre o perfil do Reddit no Redveal
 // @author       Drigva
 // @icon         https://redveal.com/favicon.ico
@@ -11,7 +11,7 @@
 // @run-at       document-idle
 // @license      MIT
 //
-// @homepageURL  https://github.com/Drigva/UserScripts/Redveal-Redirect
+// @homepageURL  https://github.com/Drigva/UserScripts/
 // @downloadURL  https://raw.githubusercontent.com/Drigva/UserScripts/main/Redveal-Redirect/Reddit-to-Redveal-Redirect.user.js
 // @updateURL    https://raw.githubusercontent.com/Drigva/UserScripts/main/Redveal-Redirect/Reddit-to-Redveal-Redirect.user.js
 // ==/UserScript==
